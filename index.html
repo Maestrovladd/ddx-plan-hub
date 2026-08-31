@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>План · Попа · Руки · 1550 ккал · DDX</title>
+  <meta name="description" content="Индивидуальный план тренировок и питания: DDX Федосеевский, 1500–1600 ккал." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #e7efeb;
+      --bg2: #dfe8e3;
+      --paper: #f7faf8;
+      --ink: #14231e;
+      --muted: #5a6b64;
+      --line: #c5d4cc;
+      --accent: #0f6b5c;
+      --accent2: #1a8a76;
+      --warn: #9a4d2e;
+      --ok: #1f6b45;
+      --chip: #d4e5df;
+      --shadow: 0 12px 40px rgba(20, 35, 30, 0.08);
+      --radius: 18px;
+      --font: "Manrope", system-ui, sans-serif;
+      --display: "Bricolage Grotesque", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, #cfe3db 0%, transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, #d7e4ef 0%, transparent 50%),
+        var(--bg);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(1080px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 1.25rem 0 4rem;
+    }
+
+    .hero {
+      background: linear-gradient(145deg, #12352f 0%, #0f6b5c 48%, #1d7a8a 100%);
+      color: #f4fffb;
+      border-radius: 28px;
+      padding: clamp(1.5rem, 4vw, 2.75rem);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      animation: rise 0.7s ease-out both;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -40% 40%;
+      height: 80%;
+      background: radial-gradient(circle, rgba(255,255,255,0.14), transparent 60%);
+      pointer-events: none;
+    }
+    .hero-kicker {
+      display: inline-flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      margin-bottom: 0.85rem;
+    }
+    .hero-kicker span {
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 999px;
+      padding: 0.25rem 0.7rem;
+      background: rgba(255,255,255,0.08);
+    }
+    .hero h1 {
+      font-family: var(--display);
+      font-size: clamp(1.85rem, 5vw, 3rem);
+      line-height: 1.1;
+      margin: 0 0 0.75rem;
+      font-weight: 700;
+      max-width: 16ch;
+    }
+    .hero p {
+      margin: 0;
+      max-width: 52ch;
+      font-size: 1.02rem;
+      opacity: 0.92;
+    }
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .hero-meta div {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 14px;
+      padding: 0.85rem 1rem;
+    }
+    .hero-meta strong {
+      display: block;
+      font-family: var(--display);
+      font-size: 1.15rem;
+      margin-bottom: 0.15rem;
+    }
+    .hero-meta span { font-size: 0.82rem; opacity: 0.85; }
+
+    .nav-shell {
+      position: sticky;
+      top: 0.6rem;
+      z-index: 40;
+      margin: 1rem 0 1.25rem;
+      animation: rise 0.7s ease-out 0.08s both;
+    }
+    .nav {
+      display: flex;
+      gap: 0.4rem;
+      overflow-x: auto;
+      padding: 0.4rem;
+      background: rgba(247, 250, 248, 0.86);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+      -webkit-overflow-scrolling: touch;
+    }
+    .nav button {
+      flex: 0 0 auto;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font: 600 0.88rem/1 var(--font);
+      padding: 0.7rem 1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+    .nav button:hover { color: var(--ink); background: var(--chip); }
+    .nav button.active {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .panel { display: none; animation: fade 0.35s ease-out; }
+    .panel.active { display: block; }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: clamp(1.1rem, 3vw, 1.6rem);
+      box-shadow: var(--shadow);
+      margin-bottom: 1rem;
+    }
+    .card h2 {
+      font-family: var(--display);
+      font-size: clamp(1.35rem, 3vw, 1.8rem);
+      margin: 0 0 0.6rem;
+      line-height: 1.2;
+    }
+    .card h3 {
+      font-family: var(--display);
+      font-size: 1.15rem;
+      margin: 1.25rem 0 0.5rem;
+    }
+    .lead { color: var(--muted); margin: 0 0 1rem; font-size: 1.02rem; }
+
+    .callout {
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      margin: 1rem 0;
+      border: 1px solid var(--line);
+      background: var(--chip);
+    }
+    .callout.ok { background: #dff0e6; border-color: #b7dcc6; }
+    .callout.warn { background: #f8ebe4; border-color: #e5c7b6; }
+    .callout strong { color: var(--accent); }
+    .callout.warn strong { color: var(--warn); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.85rem;
+    }
+    .mini {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.95rem 1rem;
+    }
+    .mini b { display: block; margin-bottom: 0.25rem; font-family: var(--display); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      margin: 0.75rem 0 0.25rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.7rem 0.55rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    tr:last-child td { border-bottom: 0; }
+
+    .ex {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.95rem 1rem;
+      margin: 0.55rem 0;
+    }
+    .ex-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+    .ex-top b { font-family: var(--display); font-size: 1.02rem; }
+    .tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--chip);
+      border-radius: 999px;
+      padding: 0.2rem 0.55rem;
+    }
+    .hint {
+      margin: 0.4rem 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .day-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.35rem;
+    }
+    .day-head h3 { margin: 0; }
+
+    .meal {
+      border-left: 3px solid var(--accent);
+      padding-left: 0.85rem;
+      margin: 0.9rem 0;
+    }
+    .meal h4 { margin: 0 0 0.25rem; font-size: 1rem; }
+    .meal p { margin: 0.2rem 0; color: var(--muted); font-size: 0.92rem; }
+    .meal .how { color: var(--ink); }
+
+    .checklist label {
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+      padding: 0.45rem 0;
+      border-bottom: 1px dashed var(--line);
+      cursor: pointer;
+    }
+    .checklist label:last-child { border-bottom: 0; }
+    .checklist input { margin-top: 0.25rem; accent-color: var(--accent); }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 1.5rem;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-kicker">
+        <span>DDX Федосеевский</span>
+        <span>4 недели + разгрузка</span>
+        <span>1500–1600 ккал</span>
+      </div>
+      <h1>Твой план: попа, руки, чуть суше</h1>
+      <p>
+        Индивидуальная сборка под цели и ограничения — не копия чужих PDF.
+        Здесь можно быстро пройтись по вкладкам: зачем так, что делать в зале, что есть, меню на неделю.
+      </p>
+      <div class="hero-meta">
+        <div><strong>58 кг · 166 см</strong><span>28 лет · стаж ~2 года</span></div>
+        <div><strong>1550 ккал</strong><span>белок 120–130 г</span></div>
+        <div><strong>2× попа</strong><span>1× верх · 1× кардио</span></div>
+        <div><strong>Без RDL</strong><span>и без махов стоя</span></div>
+      </div>
+    </header>
+
+    <div class="nav-shell">
+      <nav class="nav" role="tablist" aria-label="Разделы плана">
+        <button type="button" class="active" data-tab="start">Старт</button>
+        <button type="button" data-tab="why">Почему плато</button>
+        <button type="button" data-tab="train">Тренировки</button>
+        <button type="button" data-tab="food">Питание</button>
+        <button type="button" data-tab="menu">Меню</button>
+        <button type="button" data-tab="check">Консилиум</button>
+      </nav>
+    </div>
+
+    <!-- START -->
+    <section id="start" class="panel active" role="tabpanel">
+      <article class="card">
+        <h2>Вступление</h2>
+        <p class="lead">
+          Ты уже ходишь в зал и примерно держишь 1500–1600 ккал. Форма почти не меняется так,
+          как хочется: попа объёмнее, руки/плечи подтянутые, −1–2 кг жира.
+          Старые программы от тренеров могли быть «нормальными списками», но без жёсткой прогрессии,
+          с упражнениями мимо твоего тела (румынская → поясница, махи → трапеция) и с лишним кардио после низа.
+        </p>
+        <div class="callout ok">
+          <strong>Вывод в одном абзаце.</strong>
+          Рост даст не «новый красивый список», а система: дневник весов → каждую неделю чуть тяжелее →
+          2 разных дня на попу → верх с руками без махов → кардио короткое после низа → еда на твоих 1550, белок 120–130.
+        </div>
+        <h3>Как читать сайт</h3>
+        <div class="grid-2">
+          <div class="mini"><b>1. Почему плато</b>Пойми, что ломало результат — чтобы не повторить.</div>
+          <div class="mini"><b>2. Тренировки</b>Три силовых дня + кардио. У каждого упражнения есть пояснение в скобках.</div>
+          <div class="mini"><b>3. Питание</b>Твои калории, не завышенная формула.</div>
+          <div class="mini"><b>4. Меню</b>7 дней: завтрак / обед / перекус / ужин + как готовить.</div>
+        </div>
+        <h3>Что сознательно убрали</h3>
+        <p class="hint">Румынская и становая · махи гантелями стоя · прыжки из приседа · два почти одинаковых дня спины · час кардио после ног · меню на 1900 ккал · разведение/сгибание лёжа (в твоём DDX нет).</p>
+      </article>
+    </section>
+
+    <!-- WHY -->
+    <section id="why" class="panel" role="tabpanel">
+      <article class="card">
+        <h2>Почему не было роста</h2>
+        <p class="lead">Консилиум: тренер зала + нутрициолог + диетологический слой. Не «ты плохо стараешься» — ломается механика.</p>
+        <div class="grid-2">
+          <div class="mini"><b>A. Нет прогрессии</b>Одни и те же кг и повторы месяцами. Без роста нагрузки мышцы не обязаны расти (особенно при стаже ~2 года).</div>
+          <div class="mini"><b>B. Кардио после низа</b>Час после попы мешает восстановлению. На следующей силовой слабее → снова нет прогресса.</div>
+          <div class="mini"><b>C. Упражнения мимо</b>RDL у тебя в поясницу. Махи стоя — в трапецию. Прыжки не строят попу.</div>
+          <div class="mini"><b>D. Еда vs ожидания</b>На 1500–1600 почти не худеешь = это уже твоя «рабочая зона». 1900 сейчас риск набора. Мышцы на 1550 растут медленно — зато можно чуть сушить, если сила растёт.</div>
+          <div class="mini"><b>E. Смена программ</b>Новый PDF каждые 2 недели не даёт 8–12 недель одной системы с дневником.</div>
+          <div class="mini"><b>F. Зал учтён</b>Только тренажёры DDX Федосеевский: сгибание и разведение <u>сидя</u>, Смит, гравитрон, жим ног, гипер, кроссовер.</div>
+        </div>
+        <div class="callout warn">
+          <strong>Главный рычаг.</strong> Заведи заметку в телефоне: упражнение → вес → повторы каждого подхода.
+          Добрала верх повторов во всех подходах → на следующей тренировке чуть увеличь вес.
+        </div>
+      </article>
+    </section>
+
+    <!-- TRAIN -->
+    <section id="train" class="panel" role="tabpanel">
+      <article class="card">
+        <h2>План тренировок</h2>
+        <p class="lead">Низ до ~1,5 ч, верх ~1 ч. После попы кардио максимум 15–20 минут. Неделя 4 — веса легче на 30–40%.</p>
+
+        <table>
+          <thead><tr><th>День</th><th>Что</th><th>Зачем</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><b>Попа A</b></td><td>Главный день накрутить попу</td></tr>
+            <tr><td>2</td><td><b>Верх</b></td><td>Спина + плечи + руки</td></tr>
+            <tr><td>3</td><td>Отдых / пилатес</td><td>Восстановление</td></tr>
+            <tr><td>4</td><td><b>Попа B</b></td><td>Попа с другого угла + ноги</td></tr>
+            <tr><td>5</td><td>Кардио 40–45 мин (пульс 130–140) или йога</td><td>Жир и выносливость отдельно</td></tr>
+            <tr><td>6–7</td><td>Ходьба / отдых</td><td>Шаги ~8–10 тысяч</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <strong>Разминка 8–10 мин.</strong> Дорожка 3–4 мин → мост без веса 2×15 → перед верхом: плечи вниз у стены 2×10
+          (чтобы трапеция не перехватывала).
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="day-head">
+          <h3>День 1 — Попа A</h3>
+          <span class="tag">после: кардио ≤20 мин</span>
+        </div>
+        <p class="hint">Цель дня: попа сзади и сбоку, без опасной тяги.</p>
+
+        <div class="ex">
+          <div class="ex-top"><b>1. Ягодичный мост</b><span class="tag">4×6–10 · от +20</span></div>
+          <p class="hint">(Тренажёр или штанга. Поднимаешь таз силой попы, вверху сожми 1 сек. Подбородок чуть к груди. Штанга не обязательна.)</p>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>2. Болгарский сплит / выпад назад</b><span class="tag">3×8–12 на ногу</span></div>
+          <p class="hint">(Одна нога впереди. Задняя на скамье или шаг назад с гантелями. Новый стимул — не плие из старой программы.)</p>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>3. Мах ногой назад в кроссовере</b><span class="tag">3×10–15 на ногу</span></div>
+          <p class="hint">(Ногу назад, корпус чуть наклонён, попа жжёт, поясницу не ломай. Изоляция без штанги на наклоне.)</p>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>4. Разведение ног сидя</b><span class="tag">3×12–15</span></div>
+          <p class="hint">(Бока попы. Спина к спинке. Лёжа у вас нет — только сидя.)</p>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>5. Пресс</b><span class="tag">2× почти до отказа</span></div>
+          <p class="hint">(Вис или мяч. Коротко — кубики рисует еда, не 10 подходов пресса.)</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="day-head">
+          <h3>День 2 — Верх</h3>
+          <span class="tag">без махов стоя</span>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>1. Гравитрон</b><span class="tag">4×6–10 · помощь ~27</span></div>
+          <p class="hint">(Подтягивания с помощью платформы. Сначала плечи вниз, потом тяни. Больше кг помощи = легче.)</p>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>2. Рычажная тяга / Хаммер</b><span class="tag">3×8–12 · ~32</span></div>
+          <p class="hint">(Грудь в упор, тянешь к поясу, локти вдоль тела. Не пожимай плечами.)</p>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>3. Обратные разведения / канат к лицу</b><span class="tag">3×12–15</span></div>
+          <p class="hint">(Задняя часть плеча. Вместо махов стоя. Лезет шея — возьми легче, плечи вниз.)</p>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>4. Жим гантелей сидя</b><span class="tag">3×8–12 · по 8 кг</span></div>
+          <p class="hint">(Со спинкой. Вверху плечи не к ушам.)</p>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>5–6. Трицепс + бицепс</b><span class="tag">по 3×10–12</span></div>
+          <p class="hint">(Блок на трицепс; гантели или блок на бицепс. Без раскачки корпусом.)</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="day-head">
+          <h3>День 4 — Попа B</h3>
+          <span class="tag">после: кардио ≤20 мин</span>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>1. Жим ног</b><span class="tag">4×8–12 · ~54</span></div>
+          <p class="hint">(Горизонтальный ок. Стопы выше и шире — больше попа. Пятками. Попу от сиденья не отрывай. Вверху колени чуть мягкие.)</p>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>2. Гипер на попу / канат между ног</b><span class="tag">3×10–15</span></div>
+          <p class="hint">(Вместо румынской. Движение тазом/попой, не залом поясницы.)</p>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>3. Плие (Смит или гиря)</b><span class="tag">3×10–15</span></div>
+          <p class="hint">(Ноги широко, носки наружу. Плие здесь, не в день 1 — чтобы не дублировать.)</p>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>4. Сгибание ног сидя</b><span class="tag">3×10–12 · ~27</span></div>
+          <p class="hint">(Зад бедра. Лёжа у вас нет — только сидя. Вниз медленнее.)</p>
+        </div>
+        <div class="ex">
+          <div class="ex-top"><b>5–6. Разведение легче + пресс</b><span class="tag">2×12–15 и 2× пресс</span></div>
+          <p class="hint">(Добивка боков попы и короткий пресс.)</p>
+        </div>
+
+        <h3>Если тренажёр занят</h3>
+        <table>
+          <tbody>
+            <tr><td>Мост-тренажёр</td><td>→ штанга или гантель на бёдрах</td></tr>
+            <tr><td>Болгарский</td><td>→ выпад назад</td></tr>
+            <tr><td>Гравитрон</td><td>→ тяга сверху</td></tr>
+            <tr><td>Гипер</td><td>→ канат между ног на нижнем блоке</td></tr>
+            <tr><td>Жим ног занят</td><td>→ начни с плие/Смита, жим потом</td></tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <!-- FOOD -->
+    <section id="food" class="panel" role="tabpanel">
+      <article class="card">
+        <h2>Питание</h2>
+        <p class="lead">Цифры твои, не «формула из интернета». 1900 не используем.</p>
+        <div class="grid-2">
+          <div class="mini"><b>1500–1600 ккал</b>Цель-середина 1550</div>
+          <div class="mini"><b>Белок 120–130 г</b>Главное каждый день</div>
+          <div class="mini"><b>Жиры 45–50 г</b>Масло взвешивать</div>
+          <div class="mini"><b>Угли 140–160 г</b>В дни попы ближе к 160</div>
+        </div>
+        <h3>Как есть в будни</h3>
+        <ul>
+          <li>3 приёма + 1 перекус</li>
+          <li>В каждом основном: белок + овощи</li>
+          <li>За 1,5–2 ч до зала — обед с крупой и курицей/рыбой</li>
+          <li>После зала за 1–2 ч — белок + немного углеводов</li>
+          <li>Дни отдыха — угли ближе к 140</li>
+        </ul>
+        <div class="callout">
+          <strong>На глаз.</strong> 100 г грудки ≈ 30 г белка · 100 г творога 5% ≈ 17 г белка · 1 ч.л. масла ≈ 5 г жира / ~45 ккал.
+        </div>
+        <div class="callout warn">
+          <strong>Через 14 дней.</strong> Вес −0,3…0,5 кг за 2 недели — ок. Стоит + сила растёт — ок.
+          Сила 2 недели не растёт — только +100 ккал углеводами в дни попы, не прыжок на 1900.
+        </div>
+      </article>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu" class="panel" role="tabpanel">
+      <article class="card">
+        <h2>Меню на 7 дней</h2>
+        <p class="lead">~1550 ккал · белок ~125 г. Готовь курицу и крупу на 1–2 дня вперёд.</p>
+
+        <h3>День 1 · Попа A</h3>
+        <div class="meal">
+          <h4>Завтрак — овсянка с яйцом</h4>
+          <p>Овсянка 40 г сухой + молоко/вода 100 мл + 1 яйцо + 2 белка + ягоды/пол-яблока</p>
+          <p class="how">Как: хлопья залей или свари 5 мин. Яйца омлетом почти без масла.</p>
+        </div>
+        <div class="meal">
+          <h4>Обед до зала — рис и курица</h4>
+          <p>Рис 50 г сухой + грудка 140 г + овощи 200 г + масло 3 г</p>
+          <p class="how">Как: грудку запеки 180° ~25 мин. Рис отвари. Овощи свежие.</p>
+        </div>
+        <div class="meal">
+          <h4>Перекус</h4>
+          <p>Творог 5% 150 г + яблоко</p>
+        </div>
+        <div class="meal">
+          <h4>Ужин — индейка и картофель</h4>
+          <p>Индейка/рыба 150 г + картофель 180 г + овощи + масло 3 г</p>
+          <p class="how">Как: картофель отвари или запеки дольками.</p>
+        </div>
+
+        <h3>День 2 · Верх</h3>
+        <div class="meal"><h4>Завтрак</h4><p>Гречка 45 г + творог 120 г + яйцо 1 + овощи</p></div>
+        <div class="meal"><h4>Обед</h4><p>Макароны 50 г сухих + индейка 140 г + томатный соус без сахара + овощи</p></div>
+        <div class="meal"><h4>Перекус</h4><p>Греческий йогурт ~200 г (смотри ккал на пачке)</p></div>
+        <div class="meal"><h4>Ужин</h4><p>Говядина 110–120 г + крупа 40 г сухая + овощи + авокадо 20–25 г</p></div>
+
+        <h3>День 3 · Отдых</h3>
+        <div class="meal"><h4>Завтрак</h4><p>3 белка + 1 целое + хлеб 40–50 г + овощи</p></div>
+        <div class="meal"><h4>Обед</h4><p>Курица 140 г + гречка 40 г + овощи 250 г + масло 3 г</p></div>
+        <div class="meal"><h4>Перекус</h4><p>Протеин ~25 г белка или творог 150 г</p></div>
+        <div class="meal"><h4>Ужин</h4><p>Рыба/креветки 180 г + картофель 120 г + большой салат + масло 3 г</p></div>
+
+        <h3>День 4 · Попа B</h3>
+        <p class="hint">Как день 1. Рис на обед можно 55 г сухих.</p>
+
+        <h3>День 5 · Кардио</h3>
+        <div class="meal"><h4>Завтрак</h4><p>Тост 40 г + 1 яйцо + 2 белка + овощи</p></div>
+        <div class="meal"><h4>Обед</h4><p>Булгур 45 г + курица 130 г + овощи (масло не лей — вечером сёмга)</p></div>
+        <div class="meal"><h4>Перекус</h4><p>Йогурт 180–200 г + яблоко/груша</p></div>
+        <div class="meal"><h4>Ужин</h4><p>Сёмга 80–100 г + овощи + картофель 120 г</p></div>
+
+        <h3>День 6</h3>
+        <div class="meal"><h4>День</h4><p>Творог 200 г + хлопья 25 г → курица 140 + рис 45 → 2 яйца + огурец → индейка 140 + гречка 35 г + овощи</p></div>
+
+        <h3>День 7</h3>
+        <p class="hint">Сборка сама: ~1550 / белок 125 / жиры ~48 / угли ~150. Один «вкусный» приём ок, день в лимите.</p>
+
+        <h3>Заготовки на будни</h3>
+        <div class="grid-2">
+          <div class="mini"><b>Курица на 3 обеда</b>450 г грудки, специи, 180° ~25 мин. Храни 2–3 дня.</div>
+          <div class="mini"><b>Салат-объём</b>Капуста/огурцы/томаты + лимон + только 3 г масла.</div>
+          <div class="mini"><b>Картофель дольками</b>Духовка, спрей масла, специи.</div>
+          <div class="mini"><b>Ужин за 15 мин</b>Индейка на гриле + замороженные овощи + готовый рис.</div>
+        </div>
+      </article>
+    </section>
+
+    <!-- CHECK -->
+    <section id="check" class="panel" role="tabpanel">
+      <article class="card">
+        <h2>Консилиум и чеклист</h2>
+        <p class="lead">Финальная проверка: план бьёт в цели, зал и твои калории.</p>
+        <table>
+          <thead><tr><th>Цель</th><th>Вердикт</th></tr></thead>
+          <tbody>
+            <tr><td>Попа больше</td><td>Да — 2 дня, мост + одна нога + жим, без RDL</td></tr>
+            <tr><td>Руки / плечи</td><td>Да — жим + три/би + зад плеча, без махов</td></tr>
+            <tr><td>−1–2 кг жира</td><td>Да — 1550 + отдельное кардио + шаги</td></tr>
+            <tr><td>Трапеция</td><td>Да — нет махов стоя, куй плечи вниз</td></tr>
+            <tr><td>Поясница</td><td>Да — нет RDL; гипер/канат</td></tr>
+            <tr><td>DDX</td><td>Да — только сидящие разведение и сгибание</td></tr>
+            <tr><td>Быт</td><td>Да — простые рецепты, 3+1 приёма</td></tr>
+          </tbody>
+        </table>
+        <div class="callout ok">
+          <strong>Итог консилиума.</strong> Противоречий нет. Без дневника весов в зале снова будет «ходила — не росло».
+        </div>
+
+        <h3>Старт завтра</h3>
+        <div class="checklist">
+          <label><input type="checkbox" /> Дни 1, 2, 4 открыты на телефоне</label>
+          <label><input type="checkbox" /> Заметка «вес × повторы»</label>
+          <label><input type="checkbox" /> Курица, яйца, творог, крупа, овощи, кухонные весы</label>
+          <label><input type="checkbox" /> Цель дня: ~1550 / белок 125</label>
+          <label><input type="checkbox" /> После попы кардио не дольше 20 мин</label>
+          <label><input type="checkbox" /> Через 14 дней: вес, фото сзади, выросли ли рабочие веса</label>
+          <label><input type="checkbox" /> Через 4 недели: лёгкая неделя + InBody в DDX</label>
+        </div>
+      </article>
+      <p class="footer-note">DDX Новосибирск · Федосеевский · личный план · не медицинская консультация</p>
+    </section>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll(".nav button");
+    const panels = document.querySelectorAll(".panel");
+
+    function openTab(id) {
+      buttons.forEach((b) => b.classList.toggle("active", b.dataset.tab === id));
+      panels.forEach((p) => p.classList.toggle("active", p.id === id));
+      history.replaceState(null, "", "#" + id);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => openTab(btn.dataset.tab));
+    });
+
+    const initial = location.hash.replace("#", "") || "start";
+    if (document.getElementById(initial)) openTab(initial);
+
+    // Persist checklist in localStorage
+    document.querySelectorAll(".checklist input").forEach((input, i) => {
+      const key = "plan-check-" + i;
+      input.checked = localStorage.getItem(key) === "1";
+      input.addEventListener("change", () => {
+        localStorage.setItem(key, input.checked ? "1" : "0");
+      });
+    });
+  </script>
+</body>
+</html>
